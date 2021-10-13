@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "type": "shell",
+    "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+    },
+    "isBackground": true,
+    "tasks": [
+        {
+            "args": [
+                "-g",
+                "-cp",
+                ".:lib/*",
+                "*.java"
+            ],
+            "command": "javac",
+            "problemMatcher": [],
+            "label": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
