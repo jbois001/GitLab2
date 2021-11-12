@@ -1,6 +1,7 @@
 plugins {
    id 'java'
    id 'org.jbake.site' version "5.5.0"
+   id "org.xbib.gradle.plugin.git" version "2.0.0"
 }
 
 java {
@@ -26,43 +27,61 @@ task reports (dependsOn: ['check', 'javadoc']) {
    description 'Generate all reports for this project'
 }
 
-task deployReports (dependsOn: 'reports'){
-    
+
+task copyWebPages (type: Copy) {     
+    from 'src/main/html'
+    into 'build/reports'
 }
 
-task copyJDocs (type: Copy) {
+task copyDocs (type: Copy) {            
     from 'build/docs'
-    into 'build/tmp/website/assets'
+    into 'build/reports/docs'
     dependsOn 'javadoc'
 }
 
-task copyReports (type: Copy) {
-    from 'build/reports'
-    into 'build/tmp/website/assets'
-    dependsOn 'reports'
+task buildSite (dependsOn: ['reports','copyWebPages', 'copyDocs']) {
+    description 'Generate reports website for this project'
 }
 
-task copyJbakeTemplates (type: Copy) {
-    from 'src/jbake'
-    into 'build/tmp/website'
+task clonePages() {                                            
+    doLast {
+        mkdir 'build/gh-pages'
+        def thisRepo = rootProject.projectDir.toString()
+        def pagesDir = "$buildDir/gh-pages"
+        project.delete {
+            delete pagesDir
+        }
+        def grgit = git.clone {
+            dir = pagesDir
+            uri = 'file:' + thisRepo
+            bare = false
+            refToCheckout = 'gh-pages'
+        }
+        grgit.checkout {
+            branch = 'gh-pages'
+        }
+    }
 }
 
-task buildHomePage (dependsOn: copyJbakeTemplates) {
-	 inputs.files ( 'build/tmp/website/content/home0.md', './README.md')
-	 outputs.file ( 'build/tmp/website/content/home.md' )
-	 doLast  {
-	     outputs.files.singleFile.withOutputStream { out ->
-	         for ( file in inputs.files ) file.withInputStream {
-		 	     out << it << '\n' }
-	    }
-	 }
+task copyReports (type: Copy, dependsOn: ['buildSite', 'clonePages']) {  
+    from "$buildDir/reports"
+    into "$buildDir/gh-pages"
 }
 
-jbake {
-	 srcDirName = "build/tmp/website"
-}
+task updateGHPages (dependsOn: 'copyReports') {                     
+    group = "Reporting"
+    description  'Copies reports to the gh-pages branch in preparation for a future push to GitHub'
+    doLast {
+        def pagesDir = "$buildDir/gh-pages"
+        def grgit = git.open {
+            dir = pagesDir 
+        }
+        grgit.add (update: false, patterns: ['reports/'])
+        grgit.add (update: true, patterns: ['reports/'])
+        grgit.commit {
+            message = "Updating web pages"
+        }
+        grgit.push {}
 
-task setupWebsite (dependsOn: ['buildHomePage', 'copyReports', 'copyJDocs']){
+    }
 }
-
-bake.dependsOn "setupWebsite"
