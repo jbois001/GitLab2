@@ -29,13 +29,13 @@ task reports (dependsOn: ['check', 'javadoc']) {
 
 task copyDocs (type: Copy){
     from 'build/docs'
-    into 'build/tmp/website'
+    into 'build/tmp/website/docs'
     dependsOn 'reports'
 }
 
 task copyReports (type: Copy) {
     from 'build/reports'
-    into 'build/tmp/website'
+    into 'build/tmp/website/reports'
     dependsOn 'reports'
 }
 
@@ -76,8 +76,8 @@ task updateGHPages (dependsOn: 'copySite') {
         def grgit = git.open {
             dir = pagesDir 
         }
-        grgit.add (update: false, patterns: ['reports/'])
-        grgit.add (update: true, patterns: ['reports/'])
+        grgit.add (patterns: ['docs/'])
+        grgit.add (patterns: ['reports/'])
         grgit.commit {
             message = "Updating web pages"
         }
