@@ -79,7 +79,7 @@ task updateGHPages (dependsOn: 'copySite') {
         grgit.add (patterns: ['docs/'])
         grgit.add (patterns: ['reports/'])
         grgit.commit {
-            message = "Updating web pages"
+            message = "Updating web pages2"
         }
         grgit.push {}
     }
