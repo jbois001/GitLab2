@@ -21,4 +21,4 @@ jobs:
     - name: Build and test
       run: ./gradlew build
     - name: Deploy reports and update gh-pages branch
-      run: ./gradlew updateGHPages
+      run: ./gradlew updateGHPages --info
