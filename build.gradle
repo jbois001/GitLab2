@@ -28,14 +28,14 @@ task reports (dependsOn: ['check', 'javadoc']) {
 }
 
 task copyDocs (type: Copy){
-    from 'build/docs'
-    into 'build/tmp/website/docs'
+    from '$buildDir/docs'
+    into '$buildDir/tmp/website/docs'
     dependsOn 'reports'
 }
 
 task copyReports (type: Copy) {
-    from 'build/reports'
-    into 'build/tmp/website/reports'
+    from '$buildDir/reports'
+    into '$buildDir/tmp/website/reports'
     dependsOn 'reports'
 }
 
@@ -45,7 +45,7 @@ task deployReports(dependsOn: ['copyDocs', 'copyReports']){
 
 task clonePages() {                                             
     doLast {
-        mkdir 'build/gh-pages'
+        mkdir '$buildDir/gh-pages'
         def thisRepo = rootProject.projectDir.toString()
         def pagesDir = "$buildDir/gh-pages"
         project.delete {
