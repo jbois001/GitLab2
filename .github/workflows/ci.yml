@@ -20,3 +20,5 @@ jobs:
       run: chmod +x gradlew              
     - name: Build and test
       run: ./gradlew build
+    - name: Deploy reports to docs folder for project website
+      run: ./gradlew deployReports
