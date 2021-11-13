@@ -57,11 +57,11 @@ task clonePages() {
             bare = false
             refToCheckout = 'gh-pages'
         }
-    /** 
+    
        grgit.checkout {
            branch = 'gh-pages'
        }
-       **/
+       
     }
 }
 
