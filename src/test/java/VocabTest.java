@@ -61,7 +61,7 @@ public class VocabTest {
 
     }
   
-
+/** 
     @Test
     public void testAddWordPair()
     {
@@ -107,7 +107,7 @@ public class VocabTest {
         assertThat(v.getWordsThatCanFollow("c"), contains("c"));
     }
 
-
+*/
 
 }
 //This is from master
