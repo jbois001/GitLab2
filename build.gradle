@@ -1,7 +1,8 @@
 plugins {
    id 'java'
    id 'org.jbake.site' version "5.5.0"
-   id "org.xbib.gradle.plugin.git" version "2.0.0"
+   id 'org.ajoberstar.git-publish' version "3.0.0"
+   id 'org.ajoberstar.grgit' version "4.1.0"
 }
 
 java {
