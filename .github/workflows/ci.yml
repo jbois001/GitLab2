@@ -27,4 +27,8 @@ jobs:
       with:
         branch: gh-pages
         folder: build/tmp/website
+        clean-exclude: 'index.md
+                        _config.yml
+                        .gitignore'
+
     
