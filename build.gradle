@@ -41,7 +41,7 @@ task copyReports (type: Copy) {
 }
 
 task deployReports(dependsOn: ['copyDocs', 'copyReports']){
-    description 'deploy the reports'
+    description 'deploy the reports (Really)'
 }
 
 task clonePages() {                                             
